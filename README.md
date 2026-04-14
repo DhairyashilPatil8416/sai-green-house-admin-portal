@@ -24,10 +24,11 @@ Open `index.html` directly in browser, or serve the folder with any static serve
 
 1. Push the repository to GitHub.
 2. In GitHub repo settings, open `Pages`.
-3. Set source to `GitHub Actions`.
-4. Push to `main` again or run the `Deploy to GitHub Pages` workflow manually.
+3. Set source to `Deploy from a branch`.
+4. Choose branch `gh-pages` and folder `/ (root)`.
+5. Push to `main` again or run the `Deploy to gh-pages` workflow manually.
 
-The site will publish from the workflow in `.github/workflows/deploy.yml`.
+The workflow in `.github/workflows/deploy.yml` publishes the static site to `gh-pages`.
 
 ## Google Sheet Sync
 
