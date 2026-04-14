@@ -4,7 +4,7 @@ A lightweight browser-based sales dashboard for Sai Green House Paper.
 
 ## Project Structure
 
-- `index.html` - Main app entry page
+- `index.html` - Main app entry pagemaka
 - `styles.css` - UI styles
 - `script.js` - App logic (sales, reports, sync)
 - `sw.js` - Service worker
