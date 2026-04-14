@@ -20,6 +20,15 @@ A lightweight browser-based sales dashboard for Sai Green House Paper.
 
 Open `index.html` directly in browser, or serve the folder with any static server.
 
+## Deploy Online With GitHub Pages
+
+1. Push the repository to GitHub.
+2. In GitHub repo settings, open `Pages`.
+3. Set source to `GitHub Actions`.
+4. Push to `main` again or run the `Deploy to GitHub Pages` workflow manually.
+
+The site will publish from the workflow in `.github/workflows/deploy.yml`.
+
 ## Google Sheet Sync
 
 1. Open `integrations/google-apps-script.gs`
