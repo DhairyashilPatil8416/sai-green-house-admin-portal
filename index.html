@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1f7340" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Sai Green House Paper | Sales Dashboard</title>
+  <meta
+    name="description"
+    content="Sai Green House Paper website-based software for sales entry, daily totals, monthly report and customer-wise report."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-container">
+      <div class="login-logo">
+        <img src="assets/images/shope banner.jpeg" alt="Sai Green House Paper" />
+      </div>
+      
+      <h1 class="login-title">Admin Portal</h1>
+      <p class="login-subtitle">Sai Green House Paper</p>
+      
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="loginUsername">Username</label>
+          <input 
+            type="text" 
+            id="loginUsername" 
+            placeholder="Enter username" 
+            autocomplete="username"
+            required
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <div class="password-input-wrapper">
+            <input 
+              type="password" 
+              id="loginPassword" 
+              placeholder="Enter password" 
+              autocomplete="current-password"
+              required
+            />
+            <button type="button" class="password-toggle" id="passwordToggle">
+              <span class="eye-icon">👁</span>
+            </button>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn-login">Sign In</button>
+      </form>
+
+      <p class="login-footer">Protected by PcakOS Security</p>
+    </div>
+  </div>
+
+  <!-- MAIN DASHBOARD (Hidden until login) -->
+  <div id="dashboardScreen" class="dashboard-screen hidden">
+    <header class="topbar">
+    <div class="brand-block">
+      <p class="brand-kicker">|| श्री वाकोबा प्रसन्न ||</p>
+      <h1>Sai Green House Paper</h1>
+      <p class="sub">ग्रीन हाऊस पेपर विक्री व्यवस्थापन सॉफ्टवेअर</p>
+    </div>
+    <div class="topbar-right">
+      <div class="header-side-banner">
+        <img src="assets/images/shope banner.jpeg" alt="Shop banner" />
+      </div>
+      <div class="contact-quick">
+        <p>Rate: <strong>Rs 230 / KG</strong></p>
+        <a href="tel:+917776926296">Call: +91 77769 26296</a>
+        <button id="installAppBtn" type="button" class="btn btn-outline btn-sm hidden install-btn">Install App</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="header-image-section">
+      <div class="header-banner-row">
+        <div class="banner-side-image banner-side-left">
+          <img src="assets/images/left.jpg" alt="Green house paper illustration" />
+        </div>
+        <div class="header-text-overlay">
+          <p class="brand-tagline">प्रामाणिक सेवा, योग्य दर। साई ग्रीन हाउस पेपर</p>
+        </div>
+        <div class="banner-side-image banner-side-right">
+          <img src="assets/images/right.jpg" alt="Paper roll and greenhouse illustration" />
+        </div>
+      </div>
+    </div>
+    <section class="section dashboard-grid" aria-label="dashboard metrics">
+      <article class="metric-card">
+        <p>Today Total</p>
+        <strong id="todayTotalAmount">Rs 0</strong>
+        <span id="todayTotalKg">0 KG</span>
+        <span id="todayOnlineAmount">Online: Rs 0</span>
+        <span id="todayCashAmount">Cash: Rs 0</span>
+      </article>
+      <article class="metric-card">
+        <p>Monthly Total</p>
+        <strong id="monthlyTotalAmount">Rs 0</strong>
+        <span id="monthlyTotalKg">0 KG</span>
+        <span id="monthlyOnlineAmount">Online: Rs 0</span>
+        <span id="monthlyCashAmount">Cash: Rs 0</span>
+      </article>
+      <article class="metric-card">
+        <p>Total Entries</p>
+        <strong id="totalEntries">0</strong>
+        <span>Saved in this device</span>
+      </article>
+      <article class="metric-card accent">
+        <p>Product Rate</p>
+          <strong>Rs 230 / KG</strong>
+        <span>Greenhouse paper</span>
+      </article>
+    </section>
+
+    <section class="section layout-2col">
+      <article class="panel" id="add-sale">
+        <h2>Add Sale</h2>
+        <p>Customer नाव, KG आणि तारीख टाका. Total आपोआप येईल.</p>
+
+        <form id="saleForm">
+          <input type="hidden" id="editingSaleId" />
+
+          <label for="customerName">ग्राहक नाव</label>
+          <input type="text" id="customerName" placeholder="उदा. शिंदे" autocomplete="name" autocapitalize="words" required />
+
+          <label for="customerVillage">ग्राहक गाव</label>
+          <input type="text" id="customerVillage" placeholder="उदा. हरळी बु." autocomplete="address-level2" autocapitalize="words" required />
+
+          <label for="customerNumber">ग्राहक नंबर</label>
+          <input type="tel" id="customerNumber" placeholder="उदा. 9876543210" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" autocomplete="tel" required />
+
+          <label>Quantity</label>
+          <div class="qty-grid">
+            <input type="number" id="quantityKg" min="0" step="1" value="1" required placeholder="KG" />
+            <input type="number" id="quantityGram" min="0" max="999" step="1" value="0" inputmode="numeric" required placeholder="Gram" />
+          </div>
+
+          <label for="saleDate">Sale Date</label>
+          <input type="date" id="saleDate" required />
+
+          <label for="paymentMode">Payment Mode</label>
+          <select id="paymentMode" required>
+            <option value="Online">Online</option>
+            <option value="Cash">Cash</option>
+          </select>
+
+          <div class="total-box">
+            <p>Automatic Total (@ Rs 230 / KG)</p>
+            <strong id="liveTotal">Rs 230</strong>
+          </div>
+
+          <label for="billSendMode">Bill Send Option</label>
+          <select id="billSendMode">
+            <option value="none">Do Not Send</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="sms">SMS</option>
+            <option value="both">WhatsApp + SMS</option>
+          </select>
+
+          <button type="submit" id="saveSaleBtn" class="btn btn-solid full">Save Sale</button>
+          <button type="button" id="cancelEditBtn" class="btn btn-outline full hidden">Cancel Edit</button>
+        </form>
+      </article>
+
+      <aside class="panel" id="today-sales">
+        <div class="panel-head">
+          <h2>Today Sales</h2>
+          <div class="head-actions">
+            <button id="exportTodayExcelBtn" type="button" class="btn btn-outline btn-sm">Excel</button>
+            <button id="exportTodayPdfBtn" type="button" class="btn btn-outline btn-sm">PDF</button>
+          </div>
+        </div>
+        <div class="mini-stats">
+          <p>Amount: <strong id="todayAmountInline">Rs 0</strong></p>
+          <p>KG: <strong id="todayKgInline">0 KG</strong></p>
+          <p>Online: <strong id="todayOnlineInline">Rs 0</strong></p>
+          <p>Cash: <strong id="todayCashInline">Rs 0</strong></p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Village</th>
+                <th>Number</th>
+                <th>Qty</th>
+                <th>Mode</th>
+                <th>Total</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="todaySalesBody"></tbody>
+          </table>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section panel" id="purchase-calculator">
+      <h2>Paper Purchase Calculator</h2>
+      <p>तुम्ही paper किती KG घेतला आणि प्रति KG खरेदी दर टाका. Total आपोआप निघेल.</p>
+
+      <div class="purchase-grid">
+        <div>
+          <label for="purchaseKg">Purchase Qty (KG)</label>
+          <input type="number" id="purchaseKg" min="0" step="1" value="20000" inputmode="numeric" />
+        </div>
+        <div>
+          <label for="purchaseRate">Purchase Rate (Rs / KG)</label>
+          <input type="number" id="purchaseRate" min="0" step="1" value="140" inputmode="numeric" />
+        </div>
+        <div>
+          <label for="purchaseDate">Paper आणल्याची तारीख</label>
+          <input type="date" id="purchaseDate" />
+        </div>
+        <div>
+          <label for="purchaseSource">Paper कुठून आला</label>
+          <input type="text" id="purchaseSource" placeholder="उदा. Mumbai" autocapitalize="words" />
+        </div>
+        <div>
+          <label for="transportFare">गाडी भाडे (Rs)</label>
+          <input type="number" id="transportFare" min="0" step="1" value="0" inputmode="numeric" />
+        </div>
+        <div class="total-box">
+          <p id="purchaseMath">20000 x 140</p>
+          <strong id="purchaseTotal">Rs 28,00,000</strong>
+        </div>
+        <div class="total-box">
+          <p id="purchaseGrandMath">(20000 x 140) + 0</p>
+          <strong id="purchaseGrandTotal">Final: Rs 28,00,000</strong>
+          <span id="purchaseSourceText">Source: -</span>
+        </div>
+      </div>
+
+      <div class="purchase-actions">
+        <button id="savePurchaseToSheetBtn" type="button" class="btn btn-solid">Save Purchase To Google Sheet</button>
+        <button id="exportPurchasePdfBtn" type="button" class="btn btn-outline">Purchase PDF Download</button>
+        <button id="clearPurchaseDataBtn" type="button" class="btn btn-outline">Clear Purchase Data</button>
+      </div>
+    </section>
+
+    <section class="section layout-2col">
+      <article class="panel" id="monthly-report">
+        <div class="panel-head">
+          <h2>Monthly Report</h2>
+          <div class="head-actions">
+            <button id="exportMonthlyExcelBtn" type="button" class="btn btn-outline btn-sm">Excel</button>
+            <button id="exportMonthlyPdfBtn" type="button" class="btn btn-outline btn-sm">PDF</button>
+          </div>
+        </div>
+        <div class="mini-stats">
+          <p>Amount: <strong id="monthAmountInline">Rs 0</strong></p>
+          <p>KG: <strong id="monthKgInline">0 KG</strong></p>
+          <p>Online: <strong id="monthOnlineInline">Rs 0</strong></p>
+          <p>Cash: <strong id="monthCashInline">Rs 0</strong></p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Village</th>
+                <th>Number</th>
+                <th>Qty</th>
+                <th>Mode</th>
+                <th>Total</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="monthlySalesBody"></tbody>
+          </table>
+        </div>
+
+        <div class="sub-head">
+          <h3>Daily Total Separate</h3>
+          <div class="head-actions">
+            <button id="exportDailyExcelBtn" type="button" class="btn btn-outline btn-sm">Excel</button>
+            <button id="exportDailyPdfBtn" type="button" class="btn btn-outline btn-sm">PDF</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Total Qty</th>
+                <th>Online Total</th>
+                <th>Cash Total</th>
+                <th>Grand Total</th>
+              </tr>
+            </thead>
+            <tbody id="dailySummaryBody"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="panel" id="customer-report">
+        <h2>Customer-wise Report</h2>
+        <label for="customerSearch">Search Customer</label>
+        <input type="search" id="customerSearch" placeholder="नाव टाका..." />
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Village</th>
+                <th>Number</th>
+                <th>Total KG</th>
+                <th>Total Amount</th>
+                <th>Last Date</th>
+              </tr>
+            </thead>
+            <tbody id="customerReportBody"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="section panel contact" id="contact">
+      <h2>Shop Contact</h2>
+      <p>
+        पत्ता: गुरुकृपा सरस्वती समोर, सिंघायसिस स्कूलच्या मागील गेट जवळ,
+        हरळी बु., ता. गडहिंग्लज.
+      </p>
+      <div class="contact-grid">
+        <a class="contact-item" href="tel:+917776926296">
+          <span>Call</span>
+          <strong>77769 26296</strong>
+        </a>
+        <a class="contact-item" href="tel:+917057102678">
+          <span>Alternate</span>
+          <strong>70571 02678</strong>
+        </a>
+        <a class="contact-item" href="https://wa.me/917776926296" target="_blank" rel="noreferrer">
+          <span>WhatsApp</span>
+          <strong>Start Chat</strong>
+        </a>
+      </div>
+    </section>
+
+    <section class="section panel clear-panel">
+      <h2>Data Control</h2>
+      <p>ही data तुमच्या browser मध्ये save होते. Backup साठी export वापरा.</p>
+      <button id="clearDataBtn" type="button" class="btn btn-outline">Clear All Sales Data</button>
+
+      <div class="sync-block">
+        <label for="googleScriptUrl">Google Apps Script Web App URL</label>
+        <input type="url" id="googleScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" />
+        <button id="saveGoogleScriptBtn" type="button" class="btn btn-outline">Save Google Sheet Sync URL</button>
+        <button id="syncAllToSheetBtn" type="button" class="btn btn-outline">Sync All Dashboard Data To Google Sheet</button>
+        <p id="syncStatusText">Sheet sync: Off</p>
+        <p>टीप: Clear All केल्यावर फक्त dashboard/local data delete होईल. Google Sheet data तसाच राहील.</p>
+      </div>
+    </section>
+  </main>
+
+    <footer>
+      <p>© <span id="year"></span> Sai Green House Paper. Dashboard software ready.</p>
+      <button id="logoutBtn" class="btn btn-outline logout-btn">Logout</button>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "Sai Green House Paper Dashboard",
+  "short_name": "Sai Dashboard",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f4f6ef",
+  "theme_color": "#1f7340",
+  "description": "Sales dashboard for Sai Green House Paper.",
+  "icons": [
+    {
+      "src": "assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

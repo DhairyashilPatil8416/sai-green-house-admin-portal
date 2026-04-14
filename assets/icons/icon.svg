@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Sai Dashboard Icon">
+  <rect width="256" height="256" rx="40" fill="#1f7340"/>
+  <path d="M36 160c20-46 62-88 92-102 28 18 64 58 92 102" fill="none" stroke="#dff0cf" stroke-width="16" stroke-linecap="round"/>
+  <path d="M56 176h144" stroke="#d39b22" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="128" cy="120" r="18" fill="#dff0cf"/>
+</svg>
