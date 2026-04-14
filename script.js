@@ -1198,6 +1198,9 @@ async function syncAllSalesToGoogleSheet() {
 
 // DASHBOARD INITIALIZATION - called only after user logs in
 function initializeDashboard() {
+  // Clear all purchase fields on dashboard load to ensure blank start
+  resetPurchaseFields();
+
   saleForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
