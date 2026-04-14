@@ -449,13 +449,13 @@ function resetPurchaseFields() {
     purchaseRateInput.value = "";
   }
   if (purchaseDateInput) {
-    purchaseDateInput.value = getTodayISODate();
+    purchaseDateInput.value = "";
   }
   if (purchaseSourceInput) {
     purchaseSourceInput.value = "";
   }
   if (transportFareInput) {
-    transportFareInput.value = "0";
+    transportFareInput.value = "";
   }
   updatePurchaseTotal();
 }
@@ -1270,9 +1270,6 @@ quantityGramInput.addEventListener("input", updateLiveTotal);
 customerSearchInput.addEventListener("input", renderDashboard);
 
 if (purchaseKgInput && purchaseRateInput) {
-  if (purchaseDateInput) {
-    purchaseDateInput.value = getTodayISODate();
-  }
   purchaseKgInput.addEventListener("input", updatePurchaseTotal);
   purchaseRateInput.addEventListener("input", updatePurchaseTotal);
   if (transportFareInput) {
