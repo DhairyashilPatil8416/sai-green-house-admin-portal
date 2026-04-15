@@ -437,6 +437,14 @@ h1 {
   border-color: transparent;
 }
 
+.nav-hidden {
+  display: none !important;
+}
+
+.layout-2col.single-panel {
+  grid-template-columns: 1fr;
+}
+
 main {
   position: relative;
   isolation: isolate;

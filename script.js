@@ -157,6 +157,7 @@ const clearDataBtn = document.getElementById("clearDataBtn");
 const installAppBtn = document.getElementById("installAppBtn");
 const yearEl = document.getElementById("year");
 const quickNavLinks = Array.from(document.querySelectorAll(".quick-nav-link"));
+const dashboardMain = document.querySelector("main");
 
 let todaySalesCache = [];
 let monthlySalesCache = [];
@@ -1155,57 +1156,63 @@ async function syncAllSalesToGoogleSheet() {
 }
 
 function initializeQuickNav() {
-  if (quickNavInitialized || !quickNavLinks.length) {
+  if (quickNavInitialized || !quickNavLinks.length || !dashboardMain) {
     return;
   }
 
-  const sectionIds = quickNavLinks.map((link) => link.dataset.target).filter(Boolean);
-  const sections = sectionIds
-    .map((id) => document.getElementById(id))
-    .filter(Boolean);
+  const mainBlocks = Array.from(dashboardMain.children);
+  const allPanels = Array.from(dashboardMain.querySelectorAll(".panel"));
+  const layoutSections = Array.from(dashboardMain.querySelectorAll(".layout-2col"));
+
+  const resetToFullView = () => {
+    mainBlocks.forEach((block) => block.classList.remove("nav-hidden"));
+    allPanels.forEach((panel) => panel.classList.remove("nav-hidden"));
+    layoutSections.forEach((section) => section.classList.remove("single-panel"));
+  };
+
+  const showOnlyTargetPanel = (targetId) => {
+    const targetElement = document.getElementById(targetId);
+    if (!targetElement) {
+      return;
+    }
+
+    const targetPanel = targetElement.closest(".panel") || targetElement;
+    if (!targetPanel) {
+      return;
+    }
+
+    mainBlocks.forEach((block) => block.classList.add("nav-hidden"));
+    allPanels.forEach((panel) => panel.classList.add("nav-hidden"));
+    layoutSections.forEach((section) => section.classList.remove("single-panel"));
+
+    let current = targetPanel;
+    while (current && current !== dashboardMain) {
+      current.classList.remove("nav-hidden");
+      current = current.parentElement;
+    }
+
+    const parentLayout = targetPanel.closest(".layout-2col");
+    if (parentLayout) {
+      parentLayout.classList.add("single-panel");
+    }
+
+    targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   quickNavLinks.forEach((link) => {
     link.addEventListener("click", (event) => {
       const targetId = link.dataset.target;
-      const targetSection = targetId ? document.getElementById(targetId) : null;
-      if (!targetSection) {
+      if (!targetId) {
         return;
       }
 
       event.preventDefault();
-      targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      resetToFullView();
+      showOnlyTargetPanel(targetId);
       quickNavLinks.forEach((item) => item.classList.remove("active"));
       link.classList.add("active");
     });
   });
-
-  if (sections.length) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleSection = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (!visibleSection) {
-          return;
-        }
-
-        const activeId = visibleSection.target.id;
-        quickNavLinks.forEach((link) => {
-          link.classList.toggle("active", link.dataset.target === activeId);
-        });
-      },
-      {
-        root: null,
-        rootMargin: "-40% 0px -45% 0px",
-        threshold: [0.2, 0.5, 0.75]
-      }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-  }
-
-  quickNavLinks[0].classList.add("active");
   quickNavInitialized = true;
 }
 
