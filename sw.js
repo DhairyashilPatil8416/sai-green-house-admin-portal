@@ -1,4 +1,4 @@
-const CACHE_NAME = "sai-dashboard-v2";
+const CACHE_NAME = "sai-dashboard-v3";
 const APP_SHELL = [
   "./",
   "index.html",
