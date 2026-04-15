@@ -437,6 +437,15 @@ h1 {
   border-color: transparent;
 }
 
+.quick-nav-show-all {
+  background: #fff8ef;
+  border-color: rgba(17, 77, 116, 0.2);
+}
+
+.quick-nav-show-all.active {
+  background: linear-gradient(135deg, #114d74, #1a8dce);
+}
+
 .nav-hidden {
   display: none !important;
 }

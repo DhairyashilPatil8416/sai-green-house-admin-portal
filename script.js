@@ -163,6 +163,7 @@ const clearDataBtn = document.getElementById("clearDataBtn");
 const installAppBtn = document.getElementById("installAppBtn");
 const yearEl = document.getElementById("year");
 const quickNavLinks = Array.from(document.querySelectorAll(".quick-nav-link"));
+const showAllSectionsBtn = document.getElementById("showAllSectionsBtn");
 const dashboardMain = document.querySelector("main");
 
 let todaySalesCache = [];
@@ -1250,8 +1251,21 @@ function initializeQuickNav() {
       showOnlyTargetPanel(targetId);
       quickNavLinks.forEach((item) => item.classList.remove("active"));
       link.classList.add("active");
+      if (showAllSectionsBtn) {
+        showAllSectionsBtn.classList.remove("active");
+      }
     });
   });
+
+  if (showAllSectionsBtn) {
+    showAllSectionsBtn.addEventListener("click", () => {
+      resetToFullView();
+      quickNavLinks.forEach((item) => item.classList.remove("active"));
+      showAllSectionsBtn.classList.add("active");
+      dashboardMain.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
   quickNavInitialized = true;
 }
 
