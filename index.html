@@ -225,6 +225,10 @@
 
       <div class="purchase-grid">
         <div>
+          <label for="purchaseKg">Purchase Qty (KG)</label>
+          <input type="number" id="purchaseKg" min="0" step="1" inputmode="numeric" placeholder="उदा. 20000" />
+        </div>
+        <div>
           <label for="purchaseRate">Purchase Rate (Rs / KG)</label>
           <input type="number" id="purchaseRate" min="0" step="1" inputmode="numeric" placeholder="उदा. 140" />
         </div>
@@ -235,6 +239,15 @@
         <div>
           <label for="transportFare">गाडी भाडे (Rs)</label>
           <input type="number" id="transportFare" min="0" step="1" inputmode="numeric" placeholder="उदा. 0" />
+        </div>
+        <div class="total-box">
+          <p id="purchaseMath">0 x 0</p>
+          <strong id="purchaseTotal">Rs 0</strong>
+        </div>
+        <div class="total-box">
+          <p id="purchaseGrandMath">(0 x 0) + 0</p>
+          <strong id="purchaseGrandTotal">Final: Rs 0</strong>
+          <span id="purchaseSourceText">Source: -</span>
         </div>
       </div>
 

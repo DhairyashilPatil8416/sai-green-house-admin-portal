@@ -105,9 +105,15 @@ const paymentModeInput = document.getElementById("paymentMode");
 const billSendModeInput = document.getElementById("billSendMode");
 const customerSearchInput = document.getElementById("customerSearch");
 const liveTotalEl = document.getElementById("liveTotal");
+const purchaseKgInput = document.getElementById("purchaseKg");
 const purchaseRateInput = document.getElementById("purchaseRate");
 const purchaseSourceInput = document.getElementById("purchaseSource");
 const transportFareInput = document.getElementById("transportFare");
+const purchaseMathEl = document.getElementById("purchaseMath");
+const purchaseTotalEl = document.getElementById("purchaseTotal");
+const purchaseGrandMathEl = document.getElementById("purchaseGrandMath");
+const purchaseGrandTotalEl = document.getElementById("purchaseGrandTotal");
+const purchaseSourceTextEl = document.getElementById("purchaseSourceText");
 const exportPurchasePdfBtn = document.getElementById("exportPurchasePdfBtn");
 const savePurchaseToSheetBtn = document.getElementById("savePurchaseToSheetBtn");
 const clearPurchaseDataBtn = document.getElementById("clearPurchaseDataBtn");
@@ -390,24 +396,56 @@ function updateLiveTotal() {
 }
 
 function updatePurchaseTotal() {
-  // Display elements were removed - no totals to update
-  return;
+  if (!purchaseKgInput || !purchaseRateInput || !purchaseTotalEl || !purchaseMathEl) {
+    return;
+  }
+
+  const purchaseKg = Math.max(0, Number(purchaseKgInput.value) || 0);
+  const purchaseRate = Math.max(0, Number(purchaseRateInput.value) || 0);
+  const transportFare = Math.max(0, Number(transportFareInput?.value) || 0);
+  const source = (purchaseSourceInput?.value || "").trim();
+  const purchaseTotal = purchaseKg * purchaseRate;
+  const grandTotal = purchaseTotal + transportFare;
+
+  purchaseMathEl.textContent = `${purchaseKg} x ${purchaseRate}`;
+  purchaseTotalEl.textContent = formatINR(purchaseTotal);
+
+  if (purchaseGrandMathEl) {
+    purchaseGrandMathEl.textContent = `(${purchaseKg} x ${purchaseRate}) + ${transportFare}`;
+  }
+
+  if (purchaseGrandTotalEl) {
+    purchaseGrandTotalEl.textContent = `Final: ${formatINR(grandTotal)}`;
+  }
+
+  if (purchaseSourceTextEl) {
+    purchaseSourceTextEl.textContent = `Source: ${source || "-"}`;
+  }
 }
 
 function getPurchaseSnapshot() {
+  const purchaseKg = Math.max(0, Number(purchaseKgInput?.value) || 0);
   const purchaseRate = Math.max(0, Number(purchaseRateInput?.value) || 0);
   const transportFare = Math.max(0, Number(transportFareInput?.value) || 0);
   const source = (purchaseSourceInput?.value || "").trim();
+  const purchaseTotal = purchaseKg * purchaseRate;
+  const grandTotal = purchaseTotal + transportFare;
 
   return {
+    purchaseKg,
     purchaseRate,
     transportFare,
     source,
-    purchaseDate: getTodayISODate()
+    purchaseDate: getTodayISODate(),
+    purchaseTotal,
+    grandTotal
   };
 }
 
 function resetPurchaseFields() {
+  if (purchaseKgInput) {
+    purchaseKgInput.value = "";
+  }
   if (purchaseRateInput) {
     purchaseRateInput.value = "";
   }
@@ -417,6 +455,7 @@ function resetPurchaseFields() {
   if (transportFareInput) {
     transportFareInput.value = "";
   }
+  updatePurchaseTotal();
 }
 
 async function exportPurchaseToPdf() {
@@ -1293,6 +1332,17 @@ quantityKgInput.addEventListener("input", updateLiveTotal);
 quantityGramInput.addEventListener("input", updateLiveTotal);
 customerSearchInput.addEventListener("input", renderDashboard);
 
+if (purchaseKgInput && purchaseRateInput) {
+  purchaseKgInput.addEventListener("input", updatePurchaseTotal);
+  purchaseRateInput.addEventListener("input", updatePurchaseTotal);
+  if (transportFareInput) {
+    transportFareInput.addEventListener("input", updatePurchaseTotal);
+  }
+  if (purchaseSourceInput) {
+    purchaseSourceInput.addEventListener("input", updatePurchaseTotal);
+  }
+}
+
 if (exportPurchasePdfBtn) {
   exportPurchasePdfBtn.addEventListener("click", () => {
     exportPurchaseToPdf();
@@ -1303,7 +1353,7 @@ if (savePurchaseToSheetBtn) {
   savePurchaseToSheetBtn.addEventListener("click", async () => {
     const purchase = getPurchaseSnapshot();
     if (!isValidPurchaseData(purchase)) {
-      window.alert("Purchase KG, Rate आणि Date योग्य टाका.");
+      window.alert("Purchase KG आणि Rate योग्य टाका.");
       return;
     }
 
