@@ -398,6 +398,45 @@ h1 {
   padding: 6px 10px;
 }
 
+.quick-nav {
+  position: sticky;
+  top: 86px;
+  z-index: 28;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  overflow-x: auto;
+  padding: 10px 5vw 12px;
+  background: rgba(240, 249, 255, 0.9);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+  scrollbar-width: thin;
+}
+
+.quick-nav-link {
+  text-decoration: none;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  color: var(--primary-900);
+  background: #f9fff6;
+  font-weight: 700;
+  font-size: 0.86rem;
+  white-space: nowrap;
+  padding: 8px 14px;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, color 0.16s ease;
+}
+
+.quick-nav-link:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.quick-nav-link.active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary-700), var(--primary-500));
+  border-color: transparent;
+}
+
 main {
   position: relative;
   isolation: isolate;
@@ -925,6 +964,16 @@ footer {
     gap: 8px;
   }
 
+  .quick-nav {
+    top: 140px;
+    padding: 8px 12px 10px;
+  }
+
+  .quick-nav-link {
+    font-size: 0.82rem;
+    padding: 8px 12px;
+  }
+
   .header-side-banner {
     width: 120px;
     height: 70px;
@@ -986,6 +1035,10 @@ footer {
   .dashboard-grid,
   .qty-grid {
     grid-template-columns: 1fr;
+  }
+
+  .quick-nav {
+    top: 136px;
   }
 
   table {

@@ -156,10 +156,12 @@ const syncStatusText = document.getElementById("syncStatusText");
 const clearDataBtn = document.getElementById("clearDataBtn");
 const installAppBtn = document.getElementById("installAppBtn");
 const yearEl = document.getElementById("year");
+const quickNavLinks = Array.from(document.querySelectorAll(".quick-nav-link"));
 
 let todaySalesCache = [];
 let monthlySalesCache = [];
 let deferredInstallPrompt = null;
+let quickNavInitialized = false;
 
 function formatINR(amount) {
   return `Rs ${Number(amount).toLocaleString("en-IN")}`;
@@ -1152,10 +1154,66 @@ async function syncAllSalesToGoogleSheet() {
   window.alert("सर्व dashboard data Google Sheet मध्ये पाठवला.");
 }
 
+function initializeQuickNav() {
+  if (quickNavInitialized || !quickNavLinks.length) {
+    return;
+  }
+
+  const sectionIds = quickNavLinks.map((link) => link.dataset.target).filter(Boolean);
+  const sections = sectionIds
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+
+  quickNavLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const targetId = link.dataset.target;
+      const targetSection = targetId ? document.getElementById(targetId) : null;
+      if (!targetSection) {
+        return;
+      }
+
+      event.preventDefault();
+      targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      quickNavLinks.forEach((item) => item.classList.remove("active"));
+      link.classList.add("active");
+    });
+  });
+
+  if (sections.length) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleSection = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (!visibleSection) {
+          return;
+        }
+
+        const activeId = visibleSection.target.id;
+        quickNavLinks.forEach((link) => {
+          link.classList.toggle("active", link.dataset.target === activeId);
+        });
+      },
+      {
+        root: null,
+        rootMargin: "-40% 0px -45% 0px",
+        threshold: [0.2, 0.5, 0.75]
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  }
+
+  quickNavLinks[0].classList.add("active");
+  quickNavInitialized = true;
+}
+
 // DASHBOARD INITIALIZATION - called only after user logs in
 function initializeDashboard() {
   // Clear all purchase fields on dashboard load to ensure blank start
   resetPurchaseFields();
+  initializeQuickNav();
 
   saleForm.addEventListener("submit", async (event) => {
   event.preventDefault();
