@@ -440,6 +440,11 @@ h1 {
 .quick-nav-show-all {
   background: #fff8ef;
   border-color: rgba(17, 77, 116, 0.2);
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  margin-right: 2px;
+  box-shadow: 0 0 0 1px rgba(17, 77, 116, 0.06);
 }
 
 .quick-nav-show-all.active {
