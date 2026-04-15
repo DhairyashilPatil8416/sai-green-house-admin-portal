@@ -1,4 +1,4 @@
-const CACHE_NAME = "sai-dashboard-v4";
+const CACHE_NAME = "sai-dashboard-v5";
 const APP_SHELL = [
   "./",
   "index.html",
@@ -32,6 +32,21 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+  const isDocumentRequest = event.request.mode === "navigate" || event.request.destination === "document";
+
+  if (isDocumentRequest) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match("index.html")))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) {
